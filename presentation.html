@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Apache ECharts 交互式可视分析演示</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0a0a'/%3E%3Cpath d='M14 42 26 22l10 16 8-10 8 18' stroke='%2360a5fa' stroke-width='6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
-    <!-- 引入 Geist 字体体系 -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./assets/presentation.css?v=20260413-cover-premium" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
   </head>
   <body>
     <div class="presentation-container">
@@ -17,7 +18,6 @@
         <span id="progress-bar" class="presentation-progress__bar"></span>
       </div>
       
-      <!-- 1. 封面屏 -->
       <section class="slide slide--cover" id="slide-1">
         <div class="slide__inner">
           <div class="cover">
@@ -26,16 +26,16 @@
                 <p class="eyebrow">课程汇报演示</p>
                 <span class="cover__signal-pill">Interaction First</span>
               </div>
-              <h1><span class="cover__brand">Apache ECharts</span><br/>交互式可视分析<br/>演示</h1>
-              <p class="subtitle cover__subtitle">把关系表达、视觉映射与多图联动收进一个统一界面。</p>
+              <h1><span class="cover__brand">Apache ECharts</span><br/>交互式可视分析<br/>深度实践</h1>
+              <p class="subtitle cover__subtitle">从展示到探索，打破静态图表的边界。</p>
               <div class="cover__meta-strip" aria-label="封面信息">
                 <article class="cover__meta-card">
                   <span class="cover__meta-label">场景</span>
-                  <strong>数据可视化课程汇报</strong>
+                  <strong>数据可视化课程</strong>
                 </article>
                 <article class="cover__meta-card">
-                  <span class="cover__meta-label">载体</span>
-                  <strong>知识关系交互看板</strong>
+                  <span class="cover__meta-label">汇报人</span>
+                  <strong>[林海] & [罗驭时]</strong>
                 </article>
                 <article class="cover__meta-card cover__meta-card--signal">
                   <span class="cover__meta-label">核心信号</span>
@@ -62,103 +62,174 @@
         </div>
       </section>
 
-      <!-- 2. 问题与目标屏 -->
       <section class="slide slide--problem" id="slide-2">
         <div class="slide__inner">
-          <h2>静态图能展示结果，<br/>交互图才能支持探索</h2>
+          <p class="eyebrow">背景与挑战</p>
+          <h2>为什么要聊这个主题？</h2>
           <div class="two-column mt-large">
             <article class="panel">
-              <h3>静态图的问题</h3>
-              <ul class="bullet-list">
-                <li>只能看结果，难以看清分析过程</li>
-                <li>单张图很难同时表达关系、属性和局部结构</li>
-              </ul>
+              <h3>我们正陷入“数据焦虑”</h3>
+              <p class="mt-medium">在大数据时代，拿到几千条复杂关系数据，如果不加以正确的处理，光会“画图”是远远不够的。</p>
             </article>
             <article class="panel panel--accent">
-              <h3>这个 Demo 的目标</h3>
+              <h3>传统方案的局限</h3>
               <ul class="bullet-list">
-                <li>让观众在汇报中直接点击、筛选和聚焦</li>
-                <li>用一个统一界面讲清 ECharts 的综合能力</li>
+                <li>静态图表难以承载海量信息</li>
+                <li>缺乏让观众/用户自行探索的能力</li>
+                <li>我们总结了传统静态图表的“三大痛点”</li>
               </ul>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- 3. 为什么选择 ECharts -->
-      <section class="slide slide--why-echarts" id="slide-3">
+      <section class="slide" id="slide-3">
         <div class="slide__inner">
-          <p class="eyebrow">技术选型</p>
-          <h2>为什么是 ECharts</h2>
+          <p class="eyebrow" style="color:#f87171;">Pain Point 01</p>
+          <h2>痛点一：视觉过载</h2>
           <div class="two-column mt-large">
-            <article class="feature-card feature-card--hero">
-              <p class="eyebrow">Graph</p>
-              <h3>关系结构天然可见</h3>
-              <p>知识点之间的前置、关联和层次可以直接被看见。</p>
+            <article class="panel">
+              <h3>信息湮没的灾难</h3>
+              <ul class="bullet-list">
+                <li>当关系对数呈指数级增长时，静态图表会变成无法解读的“乱麻”。</li>
+                <li>节点层叠严重遮挡。</li>
+                <li>重点信息彻底湮没。</li>
+              </ul>
+              <p class="callout mt-medium">它只是把“看不懂的数据”，变成了“看不懂的图形”。</p>
             </article>
-            <article class="feature-card feature-card--hero">
-              <p class="eyebrow">Dashboard</p>
-              <h3>交互分析更自然</h3>
-              <p>多图联动、动态更新和组件协同都能低成本成立。</p>
+            <article class="panel" style="padding:0; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+              <div id="hairball-chart" style="width:100%; height:300px;"></div>
             </article>
           </div>
-          <p class="callout mt-medium">Graph + VisualMap + Events + setOption，让 ECharts 更像交互分析界面，而不只是图表库。</p>
         </div>
       </section>
 
-      <!-- 4. 与 Matplotlib 的对比屏 -->
-      <section class="slide slide--comparison" id="slide-4">
+      <section class="slide" id="slide-4">
         <div class="slide__inner">
-          <h2>差别不在能不能画图，<br/>而在能不能让人探索</h2>
-          <div class="two-column comparison-panels mt-large">
-            <article class="panel compare-panel">
-              <p class="eyebrow">Matplotlib</p>
-              <h3>更像结果输出</h3>
-              <ul class="bullet-list">
-                <li>擅长静态结果和论文插图</li>
-                <li>交互、联动和下钻都不是默认能力</li>
-              </ul>
+          <p class="eyebrow" style="color:#f87171;">Pain Point 02</p>
+          <h2>痛点二：交互断层</h2>
+          <div class="two-column mt-large">
+            <article class="feature-card">
+              <h3>无法透视局部</h3>
+              <p>“我想看这个角落的节点详情，但我点不动。”</p>
             </article>
-            <article class="panel panel--accent compare-panel">
-              <p class="eyebrow">Apache ECharts</p>
-              <h3>更像分析界面</h3>
-              <ul class="bullet-list">
-                <li>天然适合浏览器中的交互式展示</li>
-                <li>点击、筛选和联动都可以直接成为体验的一部分</li>
-              </ul>
+            <article class="feature-card">
+              <h3>无法即时筛选</h3>
+              <p>“我想筛选一下核心数据，但我得回去改代码重新运行截图。”</p>
             </article>
           </div>
-          <p class="callout mt-medium">这次汇报要展示的是探索过程，而不是结果截图。</p>
+          <p class="callout mt-medium">静态导出的图片让用户彻底丧失了对数据的操控感和探索欲。</p>
         </div>
       </section>
 
-      <!-- 5. ECharts 核心能力拆解屏 -->
       <section class="slide slide--capabilities" id="slide-5">
         <div class="slide__inner">
-          <h2>这个 Demo 重点展示四件事</h2>
+          <p class="eyebrow" style="color:#f87171;">Pain Point 03</p>
+          <h2>痛点三：维度墙 (Dimensionality Wall)</h2>
+          <p class="mt-medium">静态环境下，同时表达以下 4 个维度几乎是不可能的任务：</p>
           <div class="quad-grid mt-large">
             <article class="capability-card">
-              <h3>Graph</h3>
-              <p>关系结构一眼可见。</p>
+              <h3>数值</h3>
+              <p>需要用大小、长度来表示</p>
             </article>
             <article class="capability-card">
-              <h3>VisualMap</h3>
-              <p>属性直接映射为视觉。</p>
+              <h3>分类</h3>
+              <p>需要用形状、颜色来表示</p>
             </article>
             <article class="capability-card">
-              <h3>Connect</h3>
-              <p>主图与辅图同步联动。</p>
+              <h3>权重</h3>
+              <p>需要用粗细、透明度来表示</p>
             </article>
             <article class="capability-card">
-              <h3>State</h3>
-              <p>筛选与切换即时更新。</p>
+              <h3>关联</h3>
+              <p>需要用连线、层次来表示</p>
             </article>
           </div>
         </div>
       </section>
 
-      <!-- 6. 核心 Demo 展示屏 -->
-      <section class="slide slide--demo" id="slide-6">
+      <section class="slide" id="slide-6">
+        <div class="slide__inner">
+          <p class="eyebrow">破局与转折</p>
+          <h2>打破刻板印象</h2>
+          <div class="two-column mt-large">
+            <article class="panel">
+              <h3>我们以为的 ECharts</h3>
+              <p class="mt-medium" style="font-size:0.8em; color:#888;">仅仅是用来画基础的统计图表？</p>
+              <div style="display:flex; height:180px; margin-top:20px;">
+                <div id="boring-bar" style="flex:1;"></div>
+                <div id="boring-pie" style="flex:1;"></div>
+              </div>
+            </article>
+            <article class="panel panel--accent" style="display:flex; flex-direction:column; justify-content:center; align-items:center;">
+              <h3 style="font-size: 1.5em;">真正的 ECharts</h3>
+              <p class="mt-large" style="color: #60a5fa; font-weight:bold; font-size:1.2em;">强大的可视分析引擎</p>
+              <ul class="bullet-list mt-medium">
+                <li>多图即时联动</li>
+                <li>内置物理力导向引擎</li>
+                <li>千万级数据高帧率渲染</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide" id="slide-7">
+        <div class="slide__inner">
+          <p class="eyebrow">核心底气</p>
+          <h2>底气一：强悍的渲染底座</h2>
+          <div class="two-column mt-large">
+            <article class="feature-card feature-card--hero">
+              <p class="eyebrow">ZRender 引擎</p>
+              <h3>海量元素并发渲染</h3>
+              <p>基于 Canvas 的 2D 绘图引擎，支持海量图形元素的快速渲染。即使在复杂网络下也能保持 60 帧流畅度。</p>
+            </article>
+            <article class="feature-card feature-card--hero">
+              <p class="eyebrow">Dual Engine</p>
+              <h3>双引擎平滑切换</h3>
+              <p>Canvas 适合大数据量，SVG 适合精细打印和交互。支持一行代码低成本切换。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--capabilities" id="slide-8">
+        <div class="slide__inner">
+          <p class="eyebrow">核心底气</p>
+          <h2>底气二：视觉映射系统 (VisualMap)</h2>
+          <p class="mt-medium">将数据中的任何隐性属性，动态映射为视觉语言，轻松突破“维度墙”。</p>
+          <div class="quad-grid mt-large">
+            <article class="capability-card">
+              <h3>节点大小</h3>
+              <p>动态映射：权重、难度分</p>
+            </article>
+            <article class="capability-card">
+              <h3>颜色深浅</h3>
+              <p>动态映射：知识点分类</p>
+            </article>
+            <article class="capability-card">
+              <h3>连线粗细</h3>
+              <p>动态映射：逻辑紧密度</p>
+            </article>
+            <article class="capability-card">
+              <h3>透明梯度</h3>
+              <p>动态映射：时序或趋势</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--problem" id="slide-9">
+        <div class="slide__inner" style="text-align: center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <h2 style="font-size: 2.5em;">实战案例演示</h2>
+          <div class="panel panel--accent mt-large" style="width:80%;">
+            <h3 style="font-size: 1.5em; text-align:center;">《算法知识体系交互分析图谱》</h3>
+            <p class="mt-medium" style="text-align:center;">看看它如何秒杀基础图表与静态毛线球</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--demo" id="slide-10">
         <div class="slide__inner slide__inner--full">
           <div class="demo-stage">
             <div class="demo-stage__head">
@@ -174,15 +245,14 @@
             </div>
             <div class="demo-layout">
               <div class="demo-layout__frame">
-                <!-- 嵌入现有的项目 Demo -->
                 <iframe src="./index.html?embed=presentation&v=20260413-presentation-embed" title="ECharts Knowledge Dashboard Demo"></iframe>
               </div>
               <aside class="demo-cue">
                 <p class="demo-cue__label">看三件事</p>
                 <ul class="bullet-list bullet-list--small">
-                  <li>点击节点：进入局部分析</li>
-                  <li>点击辅图：反向驱动主图</li>
-                  <li>颜色与大小：同时编码难度和重要度</li>
+                  <li>悬浮节点：聚光灯屏蔽干扰</li>
+                  <li>点击节点：右侧图表即时联动</li>
+                  <li>颜色大小：编码难度和重要度</li>
                 </ul>
               </aside>
             </div>
@@ -190,71 +260,92 @@
         </div>
       </section>
 
-      <!-- 7. 技术实现与架构屏 -->
-      <section class="slide slide--architecture" id="slide-7">
+      <section class="slide" id="slide-11">
         <div class="slide__inner">
           <p class="eyebrow">技术架构</p>
-          <h2>从数据到交互，<br/>结构比堆功能更重要</h2>
+          <h2>底层解密：事件驱动逻辑</h2>
           <div class="two-column mt-large">
             <div class="architecture-diagram">
-              <div class="diagram-box">JSON 数据源 (Nodes / Links)</div>
+              <div class="diagram-box">用户意图 (Hover / Click)</div>
               <div class="diagram-arrow">↓</div>
-              <div class="diagram-box">Store 状态层 (Filters / Focus)</div>
+              <div class="diagram-box diagram-box--accent">监听层 ( chart.on )</div>
               <div class="diagram-arrow">↓</div>
-              <div class="diagram-box diagram-box--accent">过滤层 (Filtering Engine)</div>
-              <div class="diagram-arrow">↙ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ↘</div>
               <div class="diagram-split">
-                <div class="diagram-box">UI 面板层 (Header / Detail)</div>
-                <div class="diagram-box">图表层 (Graph / Bar / Pie)</div>
+                <div class="diagram-box">查找相关节点</div>
+                <div class="diagram-box">计算排序状态</div>
               </div>
+              <div class="diagram-arrow">↓</div>
+              <div class="diagram-box">联动触发 ( setOption 局部重绘 )</div>
             </div>
-            <div class="signal-stack">
-              <article class="signal-card">
-                <h3>静态数据</h3>
-                <p>本地 JSON 即可驱动整页。</p>
-              </article>
-              <article class="signal-card">
-                <h3>统一状态</h3>
-                <p>筛选与聚焦共用一套状态。</p>
-              </article>
-              <article class="signal-card">
-                <h3>模块实现</h3>
-                <p>图表、面板和过滤逻辑分层组织。</p>
-              </article>
-            </div>
+            <article class="panel">
+              <h3>Focus + Context</h3>
+              <p class="mt-medium">通过监听用户的点击，程序实时遍历图谱，不仅展示目标节点，同时抽取“一度关联”的上下文。</p>
+              <p class="callout mt-medium">这种“多图联动”正是从孤立图表向 BI 看板跨越的关键。</p>
+            </article>
           </div>
         </div>
       </section>
 
-      <!-- 8. 总结屏 -->
-      <section class="slide slide--closing" id="slide-8">
+      <section class="slide slide--comparison" id="slide-12">
         <div class="slide__inner">
-          <h2>ECharts 适合的不只是画图，<br/>更是分析体验</h2>
+          <p class="eyebrow">技术生态</p>
+          <h2>选型深度对比</h2>
+          <p class="mt-medium">参考本课程教材第 15 章《可视化研究与开发资源》</p>
+          <div class="two-column comparison-panels mt-large">
+            <article class="panel compare-panel">
+              <p class="eyebrow" style="color:#888;">D3.js (底层库) / Tableau (BI商业软件)</p>
+              <h3>极致，或封闭</h3>
+              <ul class="bullet-list">
+                <li><strong>D3.js：</strong>虽然灵活，但学习曲线极其陡峭，DOM操作繁琐，开发成本过高。</li>
+                <li><strong>Tableau：</strong>虽然零代码，但是封闭系统，极难定制或深度嵌入 Web 系统。</li>
+              </ul>
+            </article>
+            <article class="panel panel--accent compare-panel">
+              <p class="eyebrow">Apache ECharts</p>
+              <h3>工程环境的最优解</h3>
+              <ul class="bullet-list">
+                <li>配置式声明驱动，学习曲线中等且高效。</li>
+                <li>原生前端组件，完美融合 Vue / React。</li>
+                <li>完美平衡了开发效率与复杂交互性能。</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide--closing" id="slide-13">
+        <div class="slide__inner">
+          <p class="eyebrow">Summary</p>
+          <h2>可视化不仅是展示，更是体验</h2>
           <div class="closing-grid mt-large">
             <article class="closing-card">
-              <p>能表达关系，<br/>不只是统计结果</p>
+              <p>交互不是炫技，<br/>而是降低认知负荷的工具</p>
             </article>
             <article class="closing-card">
-              <p>能联动多个视图，<br/>不只是单张图表</p>
+              <p>合理的“多图联动”，<br/>才是分析系统的灵魂</p>
             </article>
             <article class="closing-card">
-              <p>更适合演示型、探索型的<br/>前端可视化</p>
+              <p>ECharts 远不止画图，<br/>它是挖掘数据的超级利器</p>
             </article>
           </div>
-          <p class="callout callout--accent mt-medium">这个 Demo 展示的不是知识图谱本身，而是 ECharts 在交互式分析中的表现力。</p>
         </div>
       </section>
 
-      <!-- 全局导航与控制 -->
+      <section class="slide slide--cover" id="slide-14">
+        <div class="slide__inner" style="text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+          <h1 style="font-size: 5em;"><span class="cover__brand">Q & A</span></h1>
+          <p class="subtitle mt-large" style="color:#888;">感谢聆听，期待各位的批评与建议</p>
+          <p class="mt-medium" style="font-size:0.8em; color:#444;">References: Apache ECharts Documentation | 数据可视化(第2版)</p>
+        </div>
+      </section>
+
       <div class="presentation-controls">
         <button id="prev-btn" class="nav-btn" title="上一页 (上/左箭头)">←</button>
-        <span class="page-indicator"><span id="current-page">1</span> / 8</span>
+        <span class="page-indicator"><span id="current-page">1</span> / 14</span>
         <button id="next-btn" class="nav-btn" title="下一页 (下/右箭头)">→</button>
       </div>
-
     </div>
 
-    <!-- 简单的翻页逻辑脚本 -->
     <script>
       const container = document.querySelector('.presentation-container');
       const slides = document.querySelectorAll('.slide');
@@ -264,6 +355,9 @@
       const progressBar = document.getElementById('progress-bar');
       let currentIndex = 0;
       let previousIndex = 0;
+
+      // 声明 ECharts 变量
+      let hairChart, boringBar, boringPie;
 
       function updateSlides() {
         const direction = currentIndex >= previousIndex ? 'next' : 'prev';
@@ -278,27 +372,22 @@
         pageIndicator.textContent = currentIndex + 1;
         progressBar.style.width = `${((currentIndex + 1) / slides.length) * 100}%`;
         
-        // 按钮状态
         prevBtn.style.opacity = currentIndex === 0 ? '0.3' : '1';
         prevBtn.style.cursor = currentIndex === 0 ? 'default' : 'pointer';
         nextBtn.style.opacity = currentIndex === slides.length - 1 ? '0.3' : '1';
         nextBtn.style.cursor = currentIndex === slides.length - 1 ? 'default' : 'pointer';
         previousIndex = currentIndex;
+
+        // 翻页时重置内嵌 ECharts 的尺寸
+        setTimeout(() => {
+            if(hairChart) hairChart.resize();
+            if(boringBar) boringBar.resize();
+            if(boringPie) boringPie.resize();
+        }, 150); 
       }
 
-      function nextSlide() {
-        if (currentIndex < slides.length - 1) {
-          currentIndex++;
-          updateSlides();
-        }
-      }
-
-      function prevSlide() {
-        if (currentIndex > 0) {
-          currentIndex--;
-          updateSlides();
-        }
-      }
+      function nextSlide() { if (currentIndex < slides.length - 1) { currentIndex++; updateSlides(); } }
+      function prevSlide() { if (currentIndex > 0) { currentIndex--; updateSlides(); } }
 
       nextBtn.addEventListener('click', nextSlide);
       prevBtn.addEventListener('click', prevSlide);
@@ -311,7 +400,46 @@
         }
       });
 
-      // 初始化
+      // ==========================================
+      // 初始化前端依赖的 ECharts (用于 PPT 前期打底)
+      // ==========================================
+      setTimeout(() => { 
+        // 1. 痛点展示图：毛线球
+        hairChart = echarts.init(document.getElementById('hairball-chart'));
+        var hNodes = [], hLinks = [];
+        for(let i=0; i<80; i++) hNodes.push({id: i+''});
+        for(let i=0; i<200; i++) hLinks.push({source: Math.floor(Math.random()*80)+'', target: Math.floor(Math.random()*80)+''});
+        hairChart.setOption({
+            series: [{ type: 'graph', layout: 'force', data: hNodes, links: hLinks, force: {repulsion: 15}, lineStyle: {opacity: 0.2, color:'#fff'} }]
+        });
+
+        // 2. 刻板印象：枯燥的图表
+        boringBar = echarts.init(document.getElementById('boring-bar'));
+        boringBar.setOption({
+            tooltip: {}, grid: {left: '10%', right: '10%', top: '20%', bottom: '20%'},
+            xAxis: {type: 'category', data: ['A', 'B', 'C'], axisLabel: {color: '#888'}},
+            yAxis: {type: 'value', splitLine: {show: false}, axisLabel: {show: false}},
+            series: [{type: 'bar', data: [120, 200, 150], itemStyle: {color: '#4facfe', opacity: 0.6}}]
+        });
+
+        boringPie = echarts.init(document.getElementById('boring-pie'));
+        boringPie.setOption({
+            series: [{
+                type: 'pie', radius: '60%', 
+                data: [{value: 1048}, {value: 735}, {value: 580}], 
+                label: {show: false}, itemStyle: {borderColor: '#0a0a0a', borderWidth: 2}, color: ['#00f2fe', '#4facfe', '#1a2a6c']
+            }]
+        });
+
+        // 窗口拉伸响应
+        window.addEventListener('resize', () => { 
+            if(hairChart) hairChart.resize(); 
+            if(boringBar) boringBar.resize(); 
+            if(boringPie) boringPie.resize(); 
+        });
+      }, 500);
+
+      // 初始化幻灯片状态
       updateSlides();
     </script>
   </body>
