@@ -6,16 +6,16 @@ const presentationCss = readFileSync(new URL("../assets/presentation.css", impor
 
 describe("presentation 演讲型重写", () => {
   it("会把工具对比页改成演讲式双栏而不是数据表格", () => {
-    expect(presentationHtml).toContain("差别不在能不能画图");
-    expect(presentationHtml).toContain("而在能不能让人探索");
+    expect(presentationHtml).toContain("选型深度对比");
+    expect(presentationHtml).toContain("工程环境的最优解");
     expect(presentationHtml).not.toContain("comparison-table__head");
     expect(presentationHtml).not.toContain("Matplotlib (静态绘图库)");
   });
 
   it("会把 Demo 页的观察重点压缩成三条核心动作", () => {
-    expect(presentationHtml).toContain("点击节点：进入局部分析");
-    expect(presentationHtml).toContain("点击辅图：反向驱动主图");
-    expect(presentationHtml).toContain("颜色与大小：同时编码难度和重要度");
+    expect(presentationHtml).toContain("悬浮节点：聚光灯屏蔽干扰");
+    expect(presentationHtml).toContain("点击节点：右侧图表即时联动");
+    expect(presentationHtml).toContain("颜色大小：编码难度和重要度");
     expect(presentationHtml).not.toContain("点击柱状图：主图和其他辅图按模块筛选");
     expect(presentationHtml).not.toContain("深浅色切换：UI 与 ECharts 主题的无缝联动");
   });

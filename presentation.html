@@ -76,7 +76,7 @@
               <ul class="bullet-list">
                 <li>静态图表难以承载海量信息</li>
                 <li>缺乏让观众/用户自行探索的能力</li>
-                <li>我们总结了传统静态图表的“三大痛点”</li>
+                <li>这些问题，往往会在同一张复杂关系图里同时出现</li>
               </ul>
             </article>
           </div>
@@ -85,65 +85,17 @@
 
       <section class="slide" id="slide-3">
         <div class="slide__inner">
-          <p class="eyebrow" style="color:#f87171;">Pain Point 01</p>
-          <h2>痛点一：视觉过载</h2>
-          <div class="two-column mt-large">
-            <article class="panel">
-              <h3>信息湮没的灾难</h3>
-              <ul class="bullet-list">
-                <li>当关系对数呈指数级增长时，静态图表会变成无法解读的“乱麻”。</li>
-                <li>节点层叠严重遮挡。</li>
-                <li>重点信息彻底湮没。</li>
-              </ul>
-              <p class="callout mt-medium">它只是把“看不懂的数据”，变成了“看不懂的图形”。</p>
-            </article>
-            <article class="panel" style="padding:0; overflow:hidden; display:flex; align-items:center; justify-content:center;">
-              <div id="hairball-chart" style="width:100%; height:300px;"></div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="slide" id="slide-4">
-        <div class="slide__inner">
-          <p class="eyebrow" style="color:#f87171;">Pain Point 02</p>
-          <h2>痛点二：交互断层</h2>
-          <div class="two-column mt-large">
-            <article class="feature-card">
-              <h3>无法透视局部</h3>
-              <p>“我想看这个角落的节点详情，但我点不动。”</p>
-            </article>
-            <article class="feature-card">
-              <h3>无法即时筛选</h3>
-              <p>“我想筛选一下核心数据，但我得回去改代码重新运行截图。”</p>
-            </article>
-          </div>
-          <p class="callout mt-medium">静态导出的图片让用户彻底丧失了对数据的操控感和探索欲。</p>
-        </div>
-      </section>
-
-      <section class="slide slide--capabilities" id="slide-5">
-        <div class="slide__inner">
-          <p class="eyebrow" style="color:#f87171;">Pain Point 03</p>
-          <h2>痛点三：维度墙 (Dimensionality Wall)</h2>
-          <p class="mt-medium">静态环境下，同时表达以下 4 个维度几乎是不可能的任务：</p>
-          <div class="quad-grid mt-large">
-            <article class="capability-card">
-              <h3>数值</h3>
-              <p>需要用大小、长度来表示</p>
-            </article>
-            <article class="capability-card">
-              <h3>分类</h3>
-              <p>需要用形状、颜色来表示</p>
-            </article>
-            <article class="capability-card">
-              <h3>权重</h3>
-              <p>需要用粗细、透明度来表示</p>
-            </article>
-            <article class="capability-card">
-              <h3>关联</h3>
-              <p>需要用连线、层次来表示</p>
-            </article>
+          <p class="eyebrow" style="color:#f87171;">失败案例</p>
+          <h2>一张图，为什么会彻底失控</h2>
+          <div class="pain-stage mt-large">
+            <div class="pain-stage__chart">
+              <div id="hairball-chart" style="width:100%; height:460px;"></div>
+            </div>
+            <div class="pain-stage__signals" aria-label="观察点">
+              <span class="pain-chip">连线堆叠</span>
+              <span class="pain-chip">无法聚焦</span>
+              <span class="pain-chip">属性失真</span>
+            </div>
           </div>
         </div>
       </section>
@@ -197,7 +149,7 @@
         <div class="slide__inner">
           <p class="eyebrow">核心底气</p>
           <h2>底气二：视觉映射系统 (VisualMap)</h2>
-          <p class="mt-medium">将数据中的任何隐性属性，动态映射为视觉语言，轻松突破“维度墙”。</p>
+          <p class="mt-medium">把隐藏属性变成可读的视觉信号，让复杂关系不再挤成一团。</p>
           <div class="quad-grid mt-large">
             <article class="capability-card">
               <h3>节点大小</h3>
@@ -341,7 +293,7 @@
 
       <div class="presentation-controls">
         <button id="prev-btn" class="nav-btn" title="上一页 (上/左箭头)">←</button>
-        <span class="page-indicator"><span id="current-page">1</span> / 14</span>
+        <span class="page-indicator"><span id="current-page">1</span> / <span id="total-pages">14</span></span>
         <button id="next-btn" class="nav-btn" title="下一页 (下/右箭头)">→</button>
       </div>
     </div>
@@ -352,6 +304,7 @@
       const prevBtn = document.getElementById('prev-btn');
       const nextBtn = document.getElementById('next-btn');
       const pageIndicator = document.getElementById('current-page');
+      const totalPages = document.getElementById('total-pages');
       const progressBar = document.getElementById('progress-bar');
       let currentIndex = 0;
       let previousIndex = 0;
@@ -392,26 +345,196 @@
       nextBtn.addEventListener('click', nextSlide);
       prevBtn.addEventListener('click', prevSlide);
 
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
-          nextSlide();
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
-          prevSlide();
-        }
-      });
-
-      // ==========================================
-      // 初始化前端依赖的 ECharts (用于 PPT 前期打底)
-      // ==========================================
-      setTimeout(() => { 
-        // 1. 痛点展示图：毛线球
-        hairChart = echarts.init(document.getElementById('hairball-chart'));
-        var hNodes = [], hLinks = [];
-        for(let i=0; i<80; i++) hNodes.push({id: i+''});
-        for(let i=0; i<200; i++) hLinks.push({source: Math.floor(Math.random()*80)+'', target: Math.floor(Math.random()*80)+''});
-        hairChart.setOption({
-            series: [{ type: 'graph', layout: 'force', data: hNodes, links: hLinks, force: {repulsion: 15}, lineStyle: {opacity: 0.2, color:'#fff'} }]
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+            nextSlide();
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+            prevSlide();
+          }
         });
+
+        function createSeededRandom(seed) {
+          let value = seed % 2147483647;
+          if (value <= 0) value += 2147483646;
+          return function() {
+            value = value * 16807 % 2147483647;
+            return (value - 1) / 2147483646;
+          };
+        }
+
+        function createHairballScenario() {
+          const random = createSeededRandom(20260423);
+          const coreNodeCount = 84;
+          const leftClusterCount = 18;
+          const lowerClusterCount = 14;
+          const rightClusterCount = 10;
+          const outerBridgeCount = 6;
+          const nodes = [];
+          const links = [];
+
+          function scatterGroup(prefix, count, centerX, centerY, radiusX, radiusY, options = {}) {
+            const ids = [];
+            for (let index = 0; index < count; index += 1) {
+              const angle = random() * Math.PI * 2;
+              const distance = Math.sqrt(random());
+              const jitterX = Math.cos(angle) * radiusX * distance;
+              const jitterY = Math.sin(angle) * radiusY * distance;
+              const id = `${prefix}${String(index).padStart(2, '0')}`;
+              ids.push(id);
+              nodes.push({
+                id,
+                name: id,
+                x: centerX + jitterX,
+                y: centerY + jitterY,
+                symbolSize: options.symbolSize ?? 7,
+                itemStyle: {
+                  color: options.color ?? 'rgba(255,255,255,0.78)',
+                  borderColor: options.borderColor ?? 'rgba(147,197,253,0.28)',
+                  borderWidth: options.borderWidth ?? 1,
+                  shadowColor: options.shadowColor ?? 'rgba(147,197,253,0.18)',
+                  shadowBlur: options.shadowBlur ?? 8
+                }
+              });
+            }
+            return ids;
+          }
+
+          const coreNodes = scatterGroup('c', coreNodeCount, 540, 236, 150, 118, {
+            symbolSize: 7.5,
+            color: 'rgba(255,255,255,0.86)',
+            borderColor: 'rgba(147,197,253,0.32)',
+            shadowBlur: 10
+          });
+          const leftNodes = scatterGroup('l', leftClusterCount, 220, 132, 62, 48, {
+            symbolSize: 6.5,
+            color: 'rgba(191,219,254,0.74)',
+            borderColor: 'rgba(96,165,250,0.3)',
+            shadowBlur: 6
+          });
+          const lowerNodes = scatterGroup('b', lowerClusterCount, 262, 372, 70, 52, {
+            symbolSize: 6.5,
+            color: 'rgba(226,232,240,0.7)',
+            borderColor: 'rgba(147,197,253,0.26)',
+            shadowBlur: 6
+          });
+          const rightNodes = scatterGroup('r', rightClusterCount, 878, 302, 48, 62, {
+            symbolSize: 6.8,
+            color: 'rgba(219,234,254,0.7)',
+            borderColor: 'rgba(96,165,250,0.28)',
+            shadowBlur: 6
+          });
+          const bridgeNodes = scatterGroup('o', outerBridgeCount, 704, 118, 108, 40, {
+            symbolSize: 6.2,
+            color: 'rgba(203,213,225,0.62)',
+            borderColor: 'rgba(147,197,253,0.2)',
+            shadowBlur: 4
+          });
+
+          function pushLink(source, target, style = {}) {
+            if (source === target) return;
+            links.push({
+              source,
+              target,
+              lineStyle: {
+                width: style.width ?? 1,
+                color: style.color ?? 'rgba(255,255,255,0.18)',
+                opacity: style.opacity ?? 0.24,
+                curveness: style.curveness ?? 0
+              }
+            });
+          }
+
+          for (let index = 0; index < 286; index += 1) {
+            const source = `c${String(Math.floor(random() * coreNodeCount)).padStart(2, '0')}`;
+            const target = `c${String(Math.floor(random() * coreNodeCount)).padStart(2, '0')}`;
+            pushLink(source, target, {
+              opacity: 0.28 + random() * 0.12,
+              width: 0.9 + random() * 0.35
+            });
+          }
+
+          for (let index = 0; index < 44; index += 1) {
+            pushLink(
+              leftNodes[Math.floor(random() * leftNodes.length)],
+              coreNodes[Math.floor(random() * coreNodes.length)],
+              { opacity: 0.3, width: 1.05 }
+            );
+          }
+
+          for (let index = 0; index < 34; index += 1) {
+            pushLink(
+              lowerNodes[Math.floor(random() * lowerNodes.length)],
+              coreNodes[Math.floor(random() * coreNodes.length)],
+              { opacity: 0.31, width: 1.08 }
+            );
+          }
+
+          for (let index = 0; index < 26; index += 1) {
+            pushLink(
+              rightNodes[Math.floor(random() * rightNodes.length)],
+              coreNodes[Math.floor(random() * coreNodes.length)],
+              { opacity: 0.33, width: 1.12 }
+            );
+          }
+
+          for (let index = 0; index < 16; index += 1) {
+            pushLink(
+              bridgeNodes[Math.floor(random() * bridgeNodes.length)],
+              coreNodes[Math.floor(random() * coreNodes.length)],
+              { opacity: 0.27, width: 1 }
+            );
+          }
+
+          const crossRegionLinks = [
+            { source: leftNodes[3], target: rightNodes[4] },
+            { source: leftNodes[11], target: bridgeNodes[2] },
+            { source: lowerNodes[6], target: rightNodes[7] },
+            { source: lowerNodes[10], target: bridgeNodes[4] },
+            { source: 'c08', target: rightNodes[1] },
+            { source: 'c57', target: leftNodes[14] },
+            { source: bridgeNodes[1], target: lowerNodes[2] },
+            { source: bridgeNodes[5], target: rightNodes[8] }
+          ];
+
+          crossRegionLinks.forEach(({ source, target }, index) => {
+            pushLink(source, target, {
+              width: 2.2,
+              color: '#93c5fd',
+              opacity: 0.72,
+              curveness: index % 2 === 0 ? 0.08 : -0.1
+            });
+          });
+
+          return { nodes, links };
+        }
+  
+        // ==========================================
+        // 初始化前端依赖的 ECharts (用于 PPT 前期打底)
+        // ==========================================
+        setTimeout(() => { 
+          // 1. 痛点展示图：毛线球
+          hairChart = echarts.init(document.getElementById('hairball-chart'));
+          const hairballScenario = createHairballScenario();
+          hairChart.setOption({
+              animation: false,
+              xAxis: { show: false, min: 0, max: 1024 },
+              yAxis: { show: false, min: 0, max: 460 },
+              series: [{
+                type: 'graph',
+                layout: 'none',
+                coordinateSystem: null,
+                data: hairballScenario.nodes,
+                links: hairballScenario.links,
+                roam: false,
+                silent: true,
+                label: { show: false },
+                lineStyle: {
+                  opacity: 0.24,
+                  color: 'rgba(255,255,255,0.18)',
+                  width: 1
+                }
+              }]
+          });
 
         // 2. 刻板印象：枯燥的图表
         boringBar = echarts.init(document.getElementById('boring-bar'));
@@ -440,6 +563,7 @@
       }, 500);
 
       // 初始化幻灯片状态
+      totalPages.textContent = slides.length;
       updateSlides();
     </script>
   </body>
